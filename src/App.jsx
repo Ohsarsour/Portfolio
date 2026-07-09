@@ -212,7 +212,7 @@ function AiChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [msgs]);
 
   const send = async () => {
     if (!input.trim() || loading) return;
@@ -225,7 +225,7 @@ function AiChat() {
       const res = await fetch("/api/chat", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514", max_tokens: 600,
+          model: "claude-sonnet-4-6", max_tokens: 600,
           system: RESUME_CONTEXT,
           messages: next.map(m => ({ role: m.role, content: m.content }))
         })
@@ -322,7 +322,7 @@ function JobMatcher() {
       const res = await fetch("/api/chat", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514", max_tokens: 1000,
+          model: "claude-sonnet-4-6", max_tokens: 1000,
           system: MATCHER_PROMPT,
           messages: [{ role: "user", content: `Analyze this job description:\n\n${jd}` }]
         })
@@ -439,7 +439,11 @@ function Terminal() {
   const [chatLoading, setChatLoading] = useState(false);
   const endRef = useRef(null);
   const inputRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [lines]);
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (!mounted.current) { mounted.current = true; return; }
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [lines]);
 
   const exec = useCallback(async (cmd) => {
     const trimmed = cmd.trim();
@@ -457,7 +461,7 @@ function Terminal() {
         const res = await fetch("/api/chat", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514", max_tokens: 600,
+            model: "claude-sonnet-4-6", max_tokens: 600,
             system: RESUME_CONTEXT,
             messages: [{ role: "user", content: q }]
           })
