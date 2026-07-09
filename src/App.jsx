@@ -6,9 +6,9 @@ const RESUME_CONTEXT = `You are an AI assistant on Obaidullah Sarsour's portfoli
 - MS Computer Science at Georgia Tech (Aug 2024 - Dec 2026): AI/ML, AI Ethics, Game AI
 - BS Computer Science from UNC Charlotte, Dec 2023, Cum Laude, 3.69 GPA
 - U.S. Citizen, willing to relocate, seeking Software Engineer, Full-Stack, and AI Engineering roles
-- Skills: Python, C#/.NET, TypeScript, JavaScript, React, Go, FastAPI, REST APIs, AWS, Docker, Kubernetes, Terraform, GitLab CI, PostgreSQL, MongoDB, pgvector, OAuth2/JWT, RAG pipelines, Azure OpenAI, prompt engineering, LLM integration
+- Skills: Python, C#/.NET, TypeScript, JavaScript, React, Go, FastAPI, REST APIs, AWS, Docker, Kubernetes, Terraform, GitLab CI, PostgreSQL, MongoDB, pgvector, OAuth2/JWT, RAG pipelines, Ollama/Llama 3, MiniLM embeddings, prompt engineering, LLM integration
 - Achievements: audit system processing 200+ audits/month (85% error reduction, 40% faster), 80% deploy time reduction, 25s PostgreSQL failover zero data loss, 99.9%+ uptime, incident response 30min to <5min
-- AI work: Built RAG-based AI system (Azure OpenAI GPT-4, pgvector embeddings, FastAPI) for incident debugging and automated runbook generation; AI-assisted development with Claude and MCP integrations
+- AI work: Built a self-hosted RAG system (Python/FastAPI, pgvector with HNSW indexing, local MiniLM embeddings, Ollama serving Llama 3, Docker Compose); AI-assisted development daily with Claude Code, Cursor, GitHub Copilot, and custom MCP server integrations
 - Projects: RAG AI Platform, Enterprise SSO (OAuth2/OIDC/JWT), Audit Workflow Platform (full-stack), PostgreSQL HA, Mobile Fitness UI (Top Project Georgia Tech Fall 2024)
 - Contact: Obaidullahsarsour@gmail.com | 919-561-0545 | github.com/Ohsarsour | linkedin.com/in/obaidullah-sarsour`;
 
@@ -35,12 +35,12 @@ const COMMANDS = {
   skills: () => [
     "\x1b[36mFrontend:\x1b[0m  React, TypeScript, JavaScript",
     "\x1b[36mBackend:\x1b[0m   C#/.NET Core, Python, FastAPI, Go, REST APIs",
-    "\x1b[36mAI:\x1b[0m        RAG pipelines, Azure OpenAI, pgvector, prompt engineering",
+    "\x1b[36mAI:\x1b[0m        RAG pipelines, Ollama/Llama 3, pgvector, MiniLM embeddings",
     "\x1b[36mData:\x1b[0m      PostgreSQL, MongoDB, pgvector, SQL",
     "\x1b[36mCloud:\x1b[0m     AWS, Docker, Kubernetes, Terraform, CI/CD",
   ],
   projects: () => [
-    "\x1b[36m[1]\x1b[0m RAG AI Platform — Azure OpenAI + pgvector + FastAPI",
+    "\x1b[36m[1]\x1b[0m Self-Hosted RAG Platform — FastAPI + pgvector + Ollama/Llama 3",
     "\x1b[36m[2]\x1b[0m Enterprise Operations Platform — React + .NET + Python",
     "\x1b[36m[3]\x1b[0m Enterprise SSO — OAuth2/OIDC/JWT + RBAC",
     "\x1b[36m[4]\x1b[0m Audit Workflow System — 200+ audits/month automated",
@@ -155,9 +155,9 @@ function RagArchitecture() {
   const nodes = [
     { id: "ui", label: "React UI", icon: "🖥️", x: 0, detail: "Standalone chat interface built in React. Streams responses, handles conversation state, and surfaces source citations from retrieved documents." },
     { id: "api", label: "FastAPI", icon: "⚡", x: 1, detail: "Python API layer orchestrating the pipeline: receives queries, coordinates embedding + retrieval + generation, returns structured responses with sources." },
-    { id: "embed", label: "Embeddings", icon: "🧬", x: 2, detail: "Documents and queries converted to vector embeddings via Azure OpenAI. Chunking strategy tuned for token limits — a silent chunker bug taught me to always verify what the model actually receives." },
+    { id: "embed", label: "MiniLM", icon: "🧬", x: 2, detail: "Documents and queries converted to vector embeddings with a local MiniLM model. A silent chunker bug — character-based sizing overran MiniLM's 256-token cap and quietly truncated about 60% of chunks — taught me to always verify what the model actually receives. Fixed it by switching to tokenizer-aware chunking." },
     { id: "vector", label: "pgvector", icon: "🗄️", x: 3, detail: "PostgreSQL with pgvector extension for similarity search. Chose it over dedicated vector DBs to keep the stack simple — one database, standard SQL, HNSW indexing for speed." },
-    { id: "llm", label: "GPT-4", icon: "🧠", x: 4, detail: "Retrieved context injected into prompts for grounded generation. Prompt engineering to enforce citation of sources and reduce hallucination on operational runbooks." },
+    { id: "llm", label: "Llama 3", icon: "🧠", x: 4, detail: "Llama 3 served locally through Ollama. Retrieved context is injected into prompts for grounded generation, with prompt engineering to enforce source citation and reduce hallucination." },
   ];
   const activeNode = nodes.find(n => n.id === active);
   return (
@@ -297,7 +297,7 @@ const MATCHER_PROMPT = `You are analyzing a job description against Obaidullah S
 Obaid's skills and experience:
 - 3+ years Full-Stack Software Engineer at Spectrum: React frontend, C#/.NET + Python backends, 12+ enterprise system integrations, 67 automation workflows
 - Languages: Python, C#/.NET Core (ASP.NET), TypeScript/JavaScript, Go, Bash, React
-- AI/ML: RAG pipelines (Azure OpenAI GPT-4, pgvector, FastAPI), embeddings, prompt engineering, LLM integration, AI-assisted development (Claude, MCP)
+- AI/ML: RAG pipelines (self-hosted: Python/FastAPI, pgvector with HNSW, local MiniLM embeddings, Ollama/Llama 3), prompt engineering, LLM integration, AI-assisted development (Claude Code, Cursor, GitHub Copilot, MCP)
 - Backend: REST APIs, microservices, FastAPI, workflow orchestration, OAuth2/JWT/OIDC, RBAC
 - Data: PostgreSQL (HA, Patroni, replication, tuning), MongoDB, pgvector, SQL
 - Cloud: AWS (EC2, EKS, RDS, S3, IAM, CloudWatch), Docker, Kubernetes, Terraform, GitLab CI, CI/CD
@@ -563,7 +563,7 @@ function StackGrid() {
   const layers = [
     { name: "Frontend", color: "#60a5fa", items: ["React", "TypeScript", "JavaScript", "Responsive UI"] },
     { name: "Backend", color: "#a78bfa", items: ["C#/.NET Core", "Python", "FastAPI", "Go", "REST APIs", "Microservices"] },
-    { name: "AI / LLM", color: "#f472b6", items: ["RAG Pipelines", "Azure OpenAI", "pgvector", "Embeddings", "Prompt Engineering", "Claude + MCP"] },
+    { name: "AI / LLM", color: "#f472b6", items: ["RAG Pipelines", "Ollama / Llama 3", "pgvector", "MiniLM Embeddings", "Prompt Engineering", "Claude + MCP"] },
     { name: "Data", color: "#34d399", items: ["PostgreSQL", "MongoDB", "SQL", "pgvector", "Data Modeling"] },
     { name: "Cloud & Delivery", color: "#fbbf24", items: ["AWS", "Docker", "Kubernetes", "Terraform", "GitLab CI/CD"] },
   ];
@@ -718,10 +718,10 @@ export default function Portfolio() {
           <SectionLabel tag="01 — about" title="Full-stack builder," accent="AI-native." />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14.5, color: "rgba(255,255,255,0.45)", lineHeight: 1.8 }}>
-              At Spectrum, I own a full-stack internal operations platform end to end — a React frontend, C#/.NET and Python backends, and integrations with 12+ enterprise systems across 67 automation workflows. I design the APIs, model the data, build the UI, and ship it all to production on AWS.
+              At Spectrum, I'm responsible for a full-stack internal operations platform. It's a React frontend backed by C#/.NET and Python services, and it ties together more than 12 enterprise systems across 67 automation workflows. My work spans the whole stack: designing the APIs, modeling the data, building the interface, and deploying to production on EKS clusters.
             </p>
             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14.5, color: "rgba(255,255,255,0.45)", lineHeight: 1.8 }}>
-              I'm also deep in the AI side: I built a production-pattern RAG system with Azure OpenAI and pgvector, and I'm pursuing an MS in Computer Science at Georgia Tech focused on AI/ML. Every AI feature on this site — the chatbot, the job matcher — I built with the same patterns I use at work.
+              A lot of my focus lately has been on AI. I've built a self-hosted RAG platform in Python and FastAPI, using pgvector for retrieval and a local Llama 3 model served through Ollama, and I'm working toward an MS in Computer Science at Georgia Tech with a concentration in AI/ML. The AI features on this site, like the chatbot and the job matcher, run on the Anthropic API and reflect the same patterns I work with day to day.
             </p>
           </div>
         </div>
@@ -740,7 +740,7 @@ export default function Portfolio() {
         <div style={{ maxWidth: 960, margin: "0 auto" }}>
           <SectionLabel tag="03 — projects" title="Things I've" accent="shipped." />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 18 }}>
-            <ProjectCard featured icon="🧠" title="RAG AI Platform" desc="Retrieval-augmented generation system built with Azure OpenAI GPT-4, pgvector embeddings, and FastAPI. Grounds LLM responses in real operational documents to accelerate incident debugging and auto-generate runbooks — the same architecture powering this site's AI features." tags={["Azure OpenAI", "pgvector", "FastAPI", "Python", "Embeddings"]} />
+            <ProjectCard featured icon="🧠" title="Self-Hosted RAG Platform" desc="Self-hosted retrieval-augmented generation service in Python and FastAPI, with pgvector on PostgreSQL (HNSW indexing), local MiniLM embeddings, and Ollama serving Llama 3 — all orchestrated in Docker Compose. Grounds LLM responses in real documents so answers stay accurate and cite their sources." tags={["FastAPI", "pgvector", "Ollama / Llama 3", "MiniLM", "Docker"]} />
             <ProjectCard icon="🏗️" title="Enterprise Operations Platform" desc="Full-stack platform I own end-to-end: React frontend, C#/.NET + Python backends, 12+ enterprise integrations, 67 automation workflows." tags={["React", "C#/.NET", "Python", "REST APIs"]} />
             <ProjectCard icon="📊" title="Audit Workflow System" desc="Database-driven full-stack system processing 200+ audits monthly. Designed architecture, data model, and validation logic. 85% fewer errors, 40% faster." tags={["C#/.NET", "PostgreSQL", "React"]} />
             <ProjectCard icon="🔐" title="Enterprise SSO" desc="OAuth2/OIDC/JWT single sign-on with federated identity and role-based access control across multiple internal applications." tags={["OAuth2", "OIDC", "JWT"]} />
