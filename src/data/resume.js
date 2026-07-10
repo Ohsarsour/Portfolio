@@ -1,14 +1,4 @@
-export const RESUME_CONTEXT = `You are an AI assistant on Obaidullah Sarsour's portfolio. Answer ONLY from this info. Be concise and professional.
-- Full-Stack Software Engineer at Spectrum (Charter Communications), Charlotte NC, since May 2023
-- Owns a fullstack internal operations platform: React frontend, C#/.NET and Python backends, integrating 12+ enterprise systems across 67 automation workflows
-- MS Computer Science at Georgia Tech (Aug 2024 - Dec 2026): AI/ML, AI Ethics, Game AI
-- BS Computer Science from UNC Charlotte, Dec 2023, Cum Laude, 3.69 GPA
-- U.S. Citizen, willing to relocate, seeking Software Engineer, Full-Stack, and AI Engineering roles
-- Skills: Python, C#/.NET, TypeScript, JavaScript, React, Go, FastAPI, REST APIs, AWS, Docker, Kubernetes, Terraform, GitLab CI, PostgreSQL, MongoDB, pgvector, OAuth2/JWT, RAG pipelines, Ollama/Llama 3, MiniLM embeddings, prompt engineering, LLM integration
-- Achievements: audit system processing 200+ audits/month (85% error reduction, 40% faster), 80% deploy time reduction, 25s PostgreSQL failover zero data loss, 99.9%+ uptime, incident response 30min to <5min
-- AI work: Built a self-hosted RAG system (Python/FastAPI, pgvector with HNSW indexing, local MiniLM embeddings, Ollama serving Llama 3, Docker Compose); AI-assisted development daily with Claude Code, Cursor, GitHub Copilot, and custom MCP server integrations
-- Projects: RAG AI Platform, Enterprise SSO (OAuth2/OIDC/JWT), Audit Workflow Platform (full-stack), PostgreSQL HA, Mobile Fitness UI (Top Project Georgia Tech Fall 2024)
-- Contact: Obaidullahsarsour@gmail.com | 919-561-0545 | github.com/Ohsarsour | linkedin.com/in/obaidullah-sarsour`;
+// All site content lives here. Edit this file, not the components.
 
 export const MATCHER_PROMPT = `You are analyzing a job description against Obaidullah Sarsour's profile. Return ONLY valid JSON, no markdown, no backticks, no preamble.
 
@@ -20,99 +10,202 @@ Obaid's skills and experience:
 - Data: PostgreSQL (HA, Patroni, replication, tuning), MongoDB, pgvector, SQL
 - Cloud: AWS (EC2, EKS, RDS, S3, IAM, CloudWatch), Docker, Kubernetes, Terraform, GitLab CI, CI/CD
 - Education: MS CS Georgia Tech (in progress, AI/ML focus), BS CS UNC Charlotte (Cum Laude, 3.69)
-- Achievements: 200+ audits/month system (85% error reduction), 80% faster deployments, 99.9%+ uptime, RAG AI system for incident debugging
+- Achievements: 200+ audits/month system (85% error reduction), 80% faster deployments, 99.9%+ uptime, self-hosted RAG system
 
 Analyze the job description and return this exact JSON structure:
 {"matchPercentage": <number 0-100>, "matchedSkills": ["skill1", "skill2"], "missingSkills": ["skill1"], "strongPoints": ["point1", "point2"], "summary": "2-3 sentence assessment"}
 
-Be honest about gaps. matchPercentage should reflect real alignment.`;
+Be honest about gaps. matchPercentage should reflect real alignment. Do not inflate.`;
 
-export const TERMINAL_COMMANDS = {
-  help: () => [
-    "Available commands:",
-    "",
-    "  \x1b[36mwhoami\x1b[0m       Quick intro",
-    "  \x1b[36mskills\x1b[0m       Technical skills",
-    "  \x1b[36mprojects\x1b[0m     Featured projects",
-    "  \x1b[36mcontact\x1b[0m      Get in touch",
-    "  \x1b[36mchat <msg>\x1b[0m   Ask my AI assistant anything",
-    "  \x1b[36msudo hire-obaid\x1b[0m   😏",
-    "  \x1b[36mclear\x1b[0m        Clear terminal",
-    "",
-    "  psst — try the Konami code anywhere on this site: ↑↑↓↓←→←→BA",
-  ],
-  whoami: () => [
-    "Obaidullah Sarsour — Full-Stack Software Engineer",
-    "React · C#/.NET · Python · AI/LLM integration",
-    "Georgia Tech MS CS. Building products that think.",
-  ],
-  skills: () => [
-    "\x1b[36mFrontend:\x1b[0m  React, TypeScript, JavaScript",
-    "\x1b[36mBackend:\x1b[0m   C#/.NET Core, Python, FastAPI, Go, REST APIs",
-    "\x1b[36mAI:\x1b[0m        RAG pipelines, Ollama/Llama 3, pgvector, MiniLM embeddings",
-    "\x1b[36mData:\x1b[0m      PostgreSQL, MongoDB, pgvector, SQL",
-    "\x1b[36mCloud:\x1b[0m     AWS, Docker, Kubernetes, Terraform, CI/CD",
-  ],
-  projects: () => [
-    "\x1b[36m[1]\x1b[0m Self-Hosted RAG Platform — FastAPI + pgvector + Ollama/Llama 3",
-    "\x1b[36m[2]\x1b[0m Enterprise Operations Platform — React + .NET + Python",
-    "\x1b[36m[3]\x1b[0m Enterprise SSO — OAuth2/OIDC/JWT + RBAC",
-    "\x1b[36m[4]\x1b[0m Audit Workflow System — 200+ audits/month automated",
-    "\x1b[36m[5]\x1b[0m This website — React + Claude API (yes, really)",
-  ],
-  contact: () => [
-    "\x1b[36m✉\x1b[0m  Obaidullahsarsour@gmail.com",
-    "\x1b[36m💻\x1b[0m  github.com/Ohsarsour",
-    "\x1b[36m🔗\x1b[0m  linkedin.com/in/obaidullah-sarsour",
-  ],
-  "sudo hire-obaid": () => [
-    "",
-    "  \x1b[32m✓ Password accepted\x1b[0m",
-    "  \x1b[32m✓ Verifying qualifications... PASSED\x1b[0m",
-    "  \x1b[32m✓ Checking availability... AVAILABLE\x1b[0m",
-    "  \x1b[32m✓ Evaluating culture fit... EXCELLENT\x1b[0m",
-    "",
-    "  🎉 HIRE SUCCESSFUL",
-    "  Next step: Obaidullahsarsour@gmail.com",
-    "",
+export const META = {
+  name: "Obaidullah Sarsour",
+  role: "Software Engineer, Spectrum",
+  location: "Charlotte, NC",
+  status: "Open to SWE and AI engineering roles",
+  education: "MS CS, Georgia Tech (Dec 2026)",
+};
+
+export const NAV_LINKS = [
+  { label: "Work", id: "work" },
+  { label: "Decisions", id: "decisions" },
+  { label: "Postmortem", id: "postmortem" },
+  { label: "Fit check", id: "fit" },
+  { label: "Site notes", id: "notes" },
+  { label: "Contact", id: "contact" },
+];
+
+export const INTRO = [
+  `I'm a full-stack engineer at Spectrum in Charlotte. I own an internal operations platform end to end: a React frontend, C#/.NET and Python services, and integrations with more than 12 enterprise systems across 67 automation workflows. I design the APIs, model the data, build the UI, and run it in production.`,
+  `Outside of work I built a self-hosted RAG system from scratch, and I'm finishing an MS in Computer Science at Georgia Tech with a focus on AI/ML. Most of what I know about LLM systems came from debugging that RAG pipeline, not from a tutorial. The postmortem below is the honest version of that story.`,
+];
+
+export const WORK = [
+  {
+    title: "Self-hosted RAG system",
+    stack: "Python · FastAPI · pgvector (HNSW) · sentence-transformers MiniLM · Ollama / Llama 3 · Docker Compose",
+    problem:
+      "Operational knowledge lived in scattered documents. Finding the right runbook during an incident meant grepping wikis while the clock ran.",
+    built:
+      "A retrieval-augmented generation service, built from scratch rather than assembled from a framework. Documents are chunked with a tokenizer-aware chunker I wrote after a framework-style approach silently failed (see the postmortem), embedded locally with MiniLM, stored in PostgreSQL with pgvector and HNSW indexing, and served through FastAPI. Llama 3 runs locally through Ollama, with retrieved context injected into the prompt and citations enforced.",
+    result:
+      "Grounded answers with sources on internal operational questions, running entirely on our own hardware at zero marginal cost per query. Every architecture choice is written up as a decision record below.",
+  },
+  {
+    title: "Enterprise operations platform",
+    stack: "React · C#/.NET Core · Python · PostgreSQL · REST · AWS EKS",
+    problem:
+      "Cross-team operational work at Spectrum ran on manual handoffs between more than a dozen systems: Smartsheet, Jira, Webex, monitoring tools, and internal databases.",
+    built:
+      "The internal platform that connects them. I own it end to end: the React frontend, the .NET and Python service layer, the data model, and 67 automation workflows that move work between 12+ enterprise systems. Includes SSO with OAuth2/OIDC and role-based access control.",
+    result:
+      "Teams stopped copying data between systems by hand. One example workflow, the audit system below, is broken out because the numbers are concrete.",
+  },
+  {
+    title: "Audit workflow system",
+    stack: "C#/.NET · PostgreSQL · React",
+    problem:
+      "Compliance audits were tracked manually. Volume was around 200 per month, and manual entry meant errors that had to be caught and reworked downstream.",
+    built:
+      "A database-driven workflow system. I designed the architecture, the data model, and the validation logic that catches malformed entries at the point of entry instead of during review.",
+    result:
+      "Errors down 85%, processing time down 40%, at a sustained 200+ audits per month. Still in production.",
+  },
+];
+
+export const WORK_ALSO = [
+  { title: "PostgreSQL HA clusters", note: "Patroni and Spilo on Kubernetes, streaming replication, WAL-G archiving. Measured failover: 25 seconds, zero data loss." },
+  { title: "Enterprise SSO", note: "OAuth2/OIDC/JWT single sign-on with federated identity and RBAC across multiple internal applications." },
+  { title: "This website", note: "React on Vercel. The fit-check tool below calls the Anthropic API through a serverless proxy. Details in site notes." },
+];
+
+export const DECISIONS = [
+  {
+    id: "ADR-001",
+    title: "pgvector inside PostgreSQL, not a dedicated vector database",
+    context:
+      "The RAG system needs similarity search. Dedicated vector databases (Pinecone, Weaviate, Qdrant) are built for this. We already run PostgreSQL everywhere.",
+    decision:
+      "pgvector extension with HNSW indexing, inside the existing PostgreSQL.",
+    tradeoff:
+      "Gave up managed recall tuning and a higher scale ceiling. Kept one database, one backup story, one auth model, and standard SQL. At this corpus size, operational simplicity wins.",
+  },
+  {
+    id: "ADR-002",
+    title: "Local MiniLM embeddings, not a hosted embedding API",
+    context:
+      "The corpus includes internal operational documents. Hosted embedding APIs charge per call and require sending document text off-network.",
+    decision:
+      "sentence-transformers MiniLM (384-dim) running locally.",
+    tradeoff:
+      "Lower embedding quality than large hosted models, and a hard 256-token input cap that later caused a real incident (see postmortem). In exchange, data never leaves the network and marginal cost per document is zero.",
+  },
+  {
+    id: "ADR-003",
+    title: "Hand-rolled tokenizer-aware chunker, not a framework text splitter",
+    context:
+      "After the truncation incident, chunk sizes had to be measured in the embedding model's own tokens, not characters, and failures had to be loud.",
+    decision:
+      "Wrote the chunker. It uses the model's own tokenizer and asserts every chunk fits before embedding.",
+    tradeoff:
+      "More code to own instead of a one-line framework import. The most failure-prone step in the pipeline is now fully observable, which is what it needed to be.",
+  },
+  {
+    id: "ADR-004",
+    title: "Llama 3 through Ollama, not a hosted frontier model",
+    context:
+      "The system had a self-hosted requirement, and the generation step is grounded by retrieval anyway.",
+    decision:
+      "Ollama serving Llama 3 locally.",
+    tradeoff:
+      "Weaker raw reasoning than frontier hosted models. Acceptable because answers are constrained to retrieved context, with citations enforced in the prompt. When grounding does the heavy lifting, the model can be smaller.",
+  },
+  {
+    id: "ADR-005",
+    title: "Keep the platform in .NET, run AI as Python services",
+    context:
+      "The operations platform is C#/.NET. The AI ecosystem, from sentence-transformers to Ollama clients, is Python-first.",
+    decision:
+      "AI capabilities live in separate FastAPI services behind HTTP. The .NET platform calls them like any other dependency.",
+    tradeoff:
+      "One more service boundary to deploy and monitor, in exchange for using each ecosystem where it is strongest and never fighting a port of a Python-native library.",
+  },
+  {
+    id: "ADR-006",
+    title: "Serverless proxy and a prepaid cap for this site's AI features",
+    context:
+      "Browser code cannot hold an API key, and a public endpoint that spends money needs a bounded worst case.",
+    decision:
+      "A Vercel serverless function proxies the Anthropic API. The account runs on prepaid credits with auto-reload off.",
+    tradeoff:
+      "Cold starts add a little latency, and if the balance runs out the feature goes dark until I top up. Worst-case spend is exactly the balance already purchased, which is the point.",
+  },
+];
+
+export const POSTMORTEM = {
+  id: "PM-001",
+  severity: "SEV-3",
+  title: "The chunker that silently threw away 60% of my corpus",
+  summary:
+    "Retrieval quality in my RAG system was mediocre and I could not explain why. The root cause was silent truncation at the embedding step: about 60% of chunks were embedded from partial text, and nothing in the pipeline reported it.",
+  sections: [
+    {
+      heading: "Impact",
+      body:
+        "Answers routinely missed facts I knew were in the source documents. Roughly 60% of chunks exceeded the embedding model's input limit and were embedded from truncated text, so their vectors did not represent their content. Retrieval returned plausible but wrong neighbors.",
+    },
+    {
+      heading: "Detection",
+      body:
+        "No error, no warning, no crash. The signal was softer: answers kept missing things. I stopped trusting the pipeline and logged the exact strings the embedding model received, then compared token counts against chunk sizes. The mismatch was immediate and large.",
+    },
+    {
+      heading: "Root cause",
+      body:
+        "The chunker measured size in characters. MiniLM caps input at 256 tokens. Those are different units, and for technical text with long identifiers the ratio is unforgiving. sentence-transformers truncates over-length input silently by default. So every oversized chunk was quietly cut at 256 tokens and embedded anyway.",
+    },
+    {
+      heading: "Fix",
+      body:
+        "Rewrote chunking to be tokenizer-aware, using the model's own tokenizer to measure size. Added an assertion that every chunk fits before embedding, so this class of failure is now loud. Built a small eval set of question-answer pairs so retrieval quality is a number I can watch instead of a feeling.",
+    },
+    {
+      heading: "Lessons",
+      body:
+        "Instrument the boundary between your code and the model; log what the model actually receives, not what you think you sent. Silent truncation is a library default, not an edge case. And an eval set is what turns 'it seems better' into evidence.",
+    },
   ],
 };
 
-export const NAV_LINKS = ["About", "Projects", "Match", "Stack", "Journey", "Contact"];
+export const FIT_INTRO =
+  "Hiring for a role? Paste the job description. Claude compares it against my actual experience and returns a score, the overlaps, and the gaps. The prompt instructs it not to inflate: a 60% match will say 60%. How this works is documented in site notes.";
 
-export const JOURNEY = [
-  { y: "AUG 2024 – PRESENT", t: "M.S. Computer Science", o: "Georgia Institute of Technology", d: "AI/ML, AI Ethics & Society, Game AI. Expected Dec 2026." },
-  { y: "MAY 2023 – PRESENT", t: "Software Engineer / Platform Engineer", o: "Spectrum (Charter Communications)", d: "Full-stack internal operations platform: React + C#/.NET + Python, 12+ enterprise integrations, RAG AI system, and production infrastructure on AWS." },
-  { y: "DEC 2023", t: "B.S. Computer Science", o: "UNC Charlotte", d: "Cum Laude, 3.69 GPA." },
-];
-
-export const PROJECTS = [
-  { featured: true, icon: "🧠", title: "Self-Hosted RAG Platform", desc: "Self-hosted retrieval-augmented generation service in Python and FastAPI, with pgvector on PostgreSQL (HNSW indexing), local MiniLM embeddings, and Ollama serving Llama 3 — all orchestrated in Docker Compose. Grounds LLM responses in real documents so answers stay accurate and cite their sources.", tags: ["FastAPI", "pgvector", "Ollama / Llama 3", "MiniLM", "Docker"] },
-  { icon: "🏗️", title: "Enterprise Operations Platform", desc: "Full-stack platform I own end-to-end: React frontend, C#/.NET + Python backends, 12+ enterprise integrations, 67 automation workflows.", tags: ["React", "C#/.NET", "Python", "REST APIs"] },
-  { icon: "📊", title: "Audit Workflow System", desc: "Database-driven full-stack system processing 200+ audits monthly. Designed architecture, data model, and validation logic. 85% fewer errors, 40% faster.", tags: ["C#/.NET", "PostgreSQL", "React"] },
-  { icon: "🔐", title: "Enterprise SSO", desc: "OAuth2/OIDC/JWT single sign-on with federated identity and role-based access control across multiple internal applications.", tags: ["OAuth2", "OIDC", "JWT"] },
-  { icon: "🐘", title: "PostgreSQL HA", desc: "Production high-availability database clusters with streaming replication, automated 25-second failover, and zero data loss.", tags: ["PostgreSQL", "Patroni", "Kubernetes"] },
-  { icon: "🌐", title: "This Website", desc: "React SPA with live Claude API integration — AI chatbot, job description matcher, interactive terminal. Deployed on Vercel with serverless functions.", tags: ["React", "Claude API", "Vercel"] },
-];
-
-export const STACK_LAYERS = [
-  { name: "Frontend", color: "#60a5fa", items: ["React", "TypeScript", "JavaScript", "Responsive UI"] },
-  { name: "Backend", color: "#a78bfa", items: ["C#/.NET Core", "Python", "FastAPI", "Go", "REST APIs", "Microservices"] },
-  { name: "AI / LLM", color: "#f472b6", items: ["RAG Pipelines", "Ollama / Llama 3", "pgvector", "MiniLM Embeddings", "Prompt Engineering", "Claude + MCP"] },
-  { name: "Data", color: "#34d399", items: ["PostgreSQL", "MongoDB", "SQL", "pgvector", "Data Modeling"] },
-  { name: "Cloud & Delivery", color: "#fbbf24", items: ["AWS", "Docker", "Kubernetes", "Terraform", "GitLab CI/CD"] },
-];
-
-export const STATS = [
-  ["3+", "YEARS SHIPPING"],
-  ["12+", "SYSTEMS INTEGRATED"],
-  ["67", "WORKFLOWS AUTOMATED"],
-  ["200+", "AUDITS/MO PROCESSED"],
+export const SITE_NOTES = [
+  {
+    heading: "What this site is",
+    body:
+      "A React single-page app on Vercel, written by hand with AI assistance and reviewed line by line. No UI framework, no component library. The fit-check tool is the only dynamic feature.",
+  },
+  {
+    heading: "How the fit check works",
+    body:
+      "The browser never touches an API key. It POSTs the job description to a Vercel serverless function, which forwards it to the Anthropic API with a system prompt describing my real experience. The prompt demands strict JSON and honesty about gaps; the client parses defensively and shows an error rather than a hallucinated result if parsing fails.",
+  },
+  {
+    heading: "Cost control",
+    body:
+      "The Anthropic account runs on prepaid credits with auto-reload off. If the balance is spent, the feature stops working and the rest of the site does not care. Worst-case cost is bounded by design, the same principle as ADR-006.",
+  },
 ];
 
 export const CONTACT_LINKS = [
-  { l: "Email", h: "mailto:Obaidullahsarsour@gmail.com", i: "✉️" },
-  { l: "GitHub", h: "https://github.com/Ohsarsour", i: "💻" },
-  { l: "LinkedIn", h: "https://linkedin.com/in/obaidullah-sarsour", i: "🔗" },
-  { l: "919-561-0545", h: "tel:919-561-0545", i: "📱" },
+  { label: "Email", href: "mailto:Obaidullahsarsour@gmail.com", display: "Obaidullahsarsour@gmail.com" },
+  { label: "GitHub", href: "https://github.com/Ohsarsour", display: "github.com/Ohsarsour" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/obaidullah-sarsour", display: "linkedin.com/in/obaidullah-sarsour" },
+  { label: "Phone", href: "tel:919-561-0545", display: "919-561-0545" },
+];
+
+export const JOURNEY = [
+  { period: "Aug 2024 – present", title: "MS Computer Science", org: "Georgia Institute of Technology", note: "AI/ML focus. Expected Dec 2026." },
+  { period: "May 2023 – present", title: "Software Engineer / Platform Engineer", org: "Spectrum (Charter Communications)", note: "The platform, audit system, and infrastructure described above." },
+  { period: "Dec 2023", title: "BS Computer Science", org: "UNC Charlotte", note: "Cum Laude, 3.69 GPA." },
 ];
