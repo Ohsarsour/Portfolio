@@ -1,5 +1,5 @@
-// Vercel Serverless Function — proxies chat requests to the Anthropic API
-// so your API key stays server-side and never reaches the browser.
+// Vercel Serverless Function. Proxies requests to the Anthropic API so the
+// key stays server-side. Worst-case spend is bounded by prepaid credits.
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: model || 'claude-sonnet-4-20250514',
+        model: model || 'claude-sonnet-4-6',
         max_tokens: Math.min(max_tokens || 600, 1200),
         system,
         messages,
