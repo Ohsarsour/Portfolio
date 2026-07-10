@@ -1,80 +1,35 @@
-# obaid.dev — Personal Portfolio
+# obaidsarsour.dev v2
 
-Full-stack SWE portfolio with live AI features powered by Claude.
+Editorial redesign. Engineering-document identity: work entries written like
+design reviews, architecture decision records, a real postmortem, and a
+fit-check tool for recruiters.
 
-## Features
+## Design system
 
-- **AI Chatbot** — floating assistant that answers questions about your background
-- **AI Job Description Matcher** — recruiters paste a JD, get an honest match analysis
-- **Interactive RAG Architecture Diagram** — hover each component of your real AI system
-- **Hidden terminal easter egg** + Konami code (↑↑↓↓←→←→BA) Matrix rain
-- Aurora gradient background, typing hero animation, modern dark design
-
-## Deploy to Vercel — FREE (5 minutes)
-
-Vercel's free Hobby tier covers hosting + serverless functions. The only cost
-is Claude API usage (~$1-2/month at portfolio traffic — set a spend cap!).
-
-### 1. Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/Ohsarsour/Portfolio.git
-git push -u origin main
-```
-
-### 2. Deploy on Vercel
-
-1. Go to vercel.com, sign in with GitHub
-2. "Add New Project" → import your repo (Vite auto-detected)
-3. Add environment variable: `ANTHROPIC_API_KEY` = your key from console.anthropic.com
-4. Deploy
-
-### 3. Set a spend cap (recommended)
-
-In console.anthropic.com → Settings → Limits, set a $5/month cap.
-The AI features can never cost more than that.
-
-## Local Development
-
-```bash
-npm install
-npx vercel dev   # runs Vite + the serverless function together
-```
-
-Create a `.env` file with your `ANTHROPIC_API_KEY` first.
+- Paper #FCFCFA, ink #17191E, structural line #DADFE4
+- One accent: red pen #C13B2A (links, labels, trade-offs, the underline mark)
+- Fraunces (display) / Public Sans (body) / IBM Plex Mono (labels, metadata)
+- 3px border radius, 1px borders, no gradients, no dark mode, no animation
+  beyond smooth scroll (reduced motion respected)
 
 ## Structure
 
 ```
-├── api/chat.js       # Vercel serverless function (Claude API proxy)
-├── src/App.jsx       # The entire portfolio
-├── src/main.jsx
-├── index.html
-└── package.json
+api/chat.js                    Anthropic API proxy (unchanged behavior)
+src/data/resume.js             ALL content: work, ADRs, postmortem, prompts
+src/components/PenMark.jsx     the red underline signature
+src/components/WorkEntry.jsx   problem / built / result
+src/components/DecisionRecord.jsx
+src/components/Postmortem.jsx
+src/components/FitCheck.jsx    the job matcher, restyled
+src/components/SiteNotes.jsx   how the site works + proxy diagram
+src/App.jsx
+src/styles.css                 the whole design system
 ```
 
-## Customization
+To update content, edit `src/data/resume.js` only.
 
-- Resume data: edit `RESUME_CONTEXT` and `MATCHER_PROMPT` in src/App.jsx
-- Colors: search `#a78bfa` (purple) and `#60a5fa` (blue) for the accent palette
-- Terminal commands: add entries to the `COMMANDS` object
+## Deploy
 
-## Connecting obaidsarsour.dev (Cloudflare → Vercel)
-
-After your first Vercel deploy:
-
-1. **Vercel:** Project → Settings → Domains → add `obaidsarsour.dev` and `www.obaidsarsour.dev`
-2. **Cloudflare:** dash.cloudflare.com → obaidsarsour.dev → DNS → Records, add:
-   - Type `A`, Name `@`, Value `76.76.21.21` — set proxy status to **DNS only (grey cloud)**
-   - Type `CNAME`, Name `www`, Value `cname.vercel-dns.com` — also **DNS only (grey cloud)**
-3. Wait a few minutes. Vercel auto-issues the SSL certificate.
-
-**IMPORTANT:** The grey cloud (DNS only) matters. If Cloudflare's orange proxy
-is on, Vercel can't verify the domain and you'll get SSL errors. Vercel serves
-over HTTPS anyway, so you lose nothing.
-
-Note: `.dev` domains REQUIRE HTTPS by design — this works automatically with
-Vercel's certificates, nothing extra needed.
+Same as before: push to GitHub, Vercel auto-deploys. `ANTHROPIC_API_KEY`
+env var must be set in Vercel. Domain and DNS unchanged.
